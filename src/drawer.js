@@ -64,6 +64,17 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: "flex-start",
   },
+  copin: {
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: "flex-start",
+  fontSize:"3rem",
+  textAlign:"right"
+
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -102,11 +113,12 @@ export default function PersistentDrawerRight() {
     setListSurat(res.data);
     setTitle("List Surah");
   }
-  async function getListAyat() {
-    const data = await fetch(`http://api.alquran.cloud/v1/surah`);
+  async function getListAyat(surah) {
+    const data = await fetch(`http://api.alquran.cloud/v1/surah/${surah+1}/ar.husary`);
     const res = await data.json();
-    setListSurat(res.data);
-    setTitle("List Surah");
+    setListAyat(res.data.ayahs);
+    setListSurat([]);
+    setTitle(res.data.englishName);
   }
   return (
     <div className={classes.root}>
@@ -119,7 +131,7 @@ export default function PersistentDrawerRight() {
       >
         <Toolbar>
           <Typography variant="h6" noWrap className={classes.title}>
-            {title}
+        
           </Typography>
           <FormControl variant="filled" className={classes.formControl}>
             <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
@@ -153,6 +165,9 @@ export default function PersistentDrawerRight() {
               <SkipNextIcon />
             )}
           </IconButton>
+          <Typography variant="h6" >
+            {title}
+          </Typography>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -172,15 +187,16 @@ export default function PersistentDrawerRight() {
         <div className={classes.drawerHeader} />
         <List>
           {listSurat.map((h,index) => (
-            <ListItem button key={index}>
+            <ListItem  button key={index} onClick={()=>getListAyat(index)}>
               <ListItemText primary={index+1+". "+h.englishName} />
             </ListItem>
           ))}
         </List>
-        <List>
+        <List  >
           {listAyat.map((h,index) => (
-            <ListItem button key={index}>
-              <ListItemText primary={index+1+". "+h.englishName} />
+            <ListItem    dir="rtl"  key={index}>
+              <div style={{alignContent:"flex-start",fontSize:"3rem",marginLeft:"6px"}}>({index+1})</div>
+              <ListItemText classes={{primary:classes.copin}}   primary={h.text} />
             </ListItem>
           ))}
         </List>
