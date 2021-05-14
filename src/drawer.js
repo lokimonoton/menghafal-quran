@@ -71,13 +71,14 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-start",
-  fontSize:"1rem",
-  textAlign:"right"
+  fontSize:"3em",
+  textAlign:"right",
+
 
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+   
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -100,6 +101,8 @@ export default function PersistentDrawerRight() {
   const [title, setTitle] = useState("");
   const [listSurat, setListSurat] = useState([]);
   const [listAyat, setListAyat] = useState([]);
+  const [indexPlay, setIndexPlay] = useState(null);
+  const [ayatKeberapa, setAyatKeberapa] = useState(null);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -133,21 +136,22 @@ export default function PersistentDrawerRight() {
           <Typography variant="h6" noWrap className={classes.title}>
         
           </Typography>
-          <FormControl variant="filled" className={classes.formControl}>
-            <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
+          {listAyat.length===0?"":<FormControl variant="filled" className={classes.formControl}>
+            <InputLabel id="demo-simple-select-filled-label">Ayat</InputLabel>
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               value={""}
+              style={{backgroundColor:"white"}}
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {listAyat.map((h,index)=><MenuItem value={index+1}>
+                <em>{index+1}</em>
+              </MenuItem>)}
+              
+     
             </Select>
-          </FormControl>
+          </FormControl>}
+          
           <IconButton color="inherit" aria-label="previous">
             {theme.direction === "rtl" ? (
               <SkipNextIcon />
@@ -195,8 +199,8 @@ export default function PersistentDrawerRight() {
         <List  >
           {listAyat.map((h,index) => (
             <ListItem    dir="rtl"  key={index}>
-              <div style={{alignContent:"flex-start",fontSize:"2rem",marginLeft:"6px"}}>({index+1})</div>
-              <ListItemText classes={{primary:classes.copin}}   primary={h.text} />
+              
+              <ListItemText style={{backgroundColor:indexPlay===index?"aquamarine":""}}  classes={{primary:classes.copin}}   primary={h.text+" ("+(index+1)+")"} />
             </ListItem>
           ))}
         </List>
