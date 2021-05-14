@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-start",
-  fontSize:"3rem",
+  fontSize:"1rem",
   textAlign:"right"
 
   },
@@ -108,13 +108,13 @@ export default function PersistentDrawerRight() {
     setOpen(false);
   };
   async function getListSurah() {
-    const data = await fetch(`http://api.alquran.cloud/v1/surah`);
+    const data = await fetch(`https://api.alquran.cloud/v1/surah`);
     const res = await data.json();
     setListSurat(res.data);
     setTitle("List Surah");
   }
   async function getListAyat(surah) {
-    const data = await fetch(`http://api.alquran.cloud/v1/surah/${surah+1}/ar.husary`);
+    const data = await fetch(`https://api.alquran.cloud/v1/surah/${surah+1}/ar.husary`);
     const res = await data.json();
     setListAyat(res.data.ayahs);
     setListSurat([]);
@@ -195,7 +195,7 @@ export default function PersistentDrawerRight() {
         <List  >
           {listAyat.map((h,index) => (
             <ListItem    dir="rtl"  key={index}>
-              <div style={{alignContent:"flex-start",fontSize:"3rem",marginLeft:"6px"}}>({index+1})</div>
+              <div style={{alignContent:"flex-start",fontSize:"2rem",marginLeft:"6px"}}>({index+1})</div>
               <ListItemText classes={{primary:classes.copin}}   primary={h.text} />
             </ListItem>
           ))}
